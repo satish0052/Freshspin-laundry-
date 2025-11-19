@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FreshSpin Laundry</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      color: #111827;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      color: white;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .logo-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 3px solid #38bdf8;
+      border-top-color: #a5f3fc;
+      border-right-color: #06b6d4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: spin 2.8s linear infinite;
+    }
+
+    .logo-bubble {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.7);
+    }
+
+    nav {
+      font-size: 0.9rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: #e5e7eb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    nav a:hover {
+      color: #38bdf8;
+    }
+
+    /* HERO SECTION WITH BACKGROUND + ANIMATION */
+    .hero {
+      position: relative;
+      min-height: 78vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 1.5rem 5rem;
+      color: white;
+      overflow: hidden;
+
+      background-image:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(8, 47, 73, 0.85)),
+        url("YOUR_BACKGROUND_IMAGE_URL_HERE");
+      /* Example: url("laundry-bg.jpg"); */
+
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+
+      animation: heroMove 18s ease-in-out infinite alternate;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 520px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero h1 {
+      font-size: 2.3rem;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero p {
+      font-size: 0.95rem;
+      color: #e5e7eb;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-primary,
+    .btn-ghost {
+      border-radius: 999px;
+      padding: 0.65rem 1.4rem;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.35);
+    }
+
+    .btn-ghost {
+      background: rgba(15, 23, 42, 0.7);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+
+    .hero-tagline {
+      font-size: 0.8rem;
+      color: #cbd5f5;
+    }
+
+    /* floating bubbles */
+    .bubble {
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(248, 250, 252, 0.8);
+      box-shadow: 0 0 12px rgba(248, 250, 252, 0.9);
+      animation: rise 16s infinite ease-in;
+      opacity: 0.7;
+    }
+
+    .bubble:nth-child(1) { width: 16px; height: 16px; left: 10%; bottom: -40px; animation-delay: 0s; }
+    .bubble:nth-child(2) { width: 22px; height: 22px; left: 30%; bottom: -60px; animation-delay: 3s; }
+    .bubble:nth-child(3) { width: 14px; height: 14px; left: 50%; bottom: -30px; animation-delay: 6s; }
+    .bubble:nth-child(4) { width: 18px; height: 18px; left: 70%; bottom: -50px; animation-delay: 1.5s; }
+    .bubble:nth-child(5) { width: 26px; height: 26px; left: 85%; bottom: -70px; animation-delay: 4.5s; }
+
+    /* INFO PANEL (BOTTOM CARD WITH TABS) */
+    .info-wrapper {
+      background: transparent;
+      padding: 0 1.25rem 3rem;
+      margin-top: -3.5rem; /* pull card up into hero area */
+      position: relative;
+      z-index: 5;
+    }
+
+    .info-card {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #f9fafb;
+      border-radius: 1.5rem;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 1.75rem 1.25rem 1.5rem;
+      text-align: center;
+    }
+
+    .info-heading {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+    }
+
+    .info-sub {
+      font-size: 0.9rem;
+      color: #4b5563;
+      margin-bottom: 1.25rem;
+    }
+
+    .info-sub span {
+      display: block;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      min-width: 120px;
+      border-radius: 999px;
+      padding: 0.45rem 1rem;
+      border: 1px solid #cbd5f5;
+      background: white;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      cursor: pointer;
+    }
+
+    .tab-btn span.emoji {
+      font-size: 1.1rem;
+    }
+
+    .tab-btn.active {
+      background: #0f172a;
+      color: #f9fafb;
+      border-color: #0f172a;
+    }
+
+    .tab-content {
+      display: none;
+      text-align: center;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .tab-description {
+      font-size: 0.9rem;
+      color: #4b5563;
+      margin-bottom: 1rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.75rem;
+      text-align: left;
+    }
+
+    .card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1rem;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+      color: #111827;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: #ecfeff;
+      color: #0e7490;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Pricing list */
+    .price-list {
+      list-style: none;
+      font-size: 0.9rem;
+      color: #111827;
+      max-width: 480px;
+      margin: 0 auto 0.75rem;
+      text-align: left;
+    }
+
+    .price-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+      border-bottom: 1px dashed #e5e7eb;
+    }
+
+    .price-note {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+    }
+
+    /* Contact content */
+    .contact-lines {
+      font-size: 0.95rem;
+      color: #111827;
+      display: grid;
+      gap: 0.35rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .contact-lines a {
+      color: #0ea5e9;
+      text-decoration: none;
+    }
+
+    .contact-lines a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      padding: 1rem;
+      color: #9ca3af;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes heroMove {
+      0%   { background-position: center top; transform: scale(1); }
+      50%  { background-position: center center; transform: scale(1.05); }
+      100% { background-position: center bottom; transform: scale(1.08); }
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(0.8); opacity: 0; }
+      20% { opacity: 0.9; }
+      100% { transform: translateY(-120vh) scale(1.4); opacity: 0; }
+    }
+
+    @media (min-width: 768px) {
+      .hero {
+        text-align: left;
+        justify-content: flex-start;
+        padding-left: 8%;
+      }
+      .hero-content { align-items: flex-start; }
+      .hero h1 { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-circle">
+        <div class="logo-bubble"></div>
+      </div>
+      <span>FreshSpin Laundry</span>
+    </div>
+    <nav>
+      <a onclick="showTab('services')">Services</a>
+      <a onclick="showTab('pricing')">Pricing</a>
+      <a onclick="showTab('contact')">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <!-- animated bubbles -->
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Doorstep laundry · Same-day delivery*
+      </div>
+      <h1>Dry Cleaning at Your Door</h1>
+      <p>We pick up, clean and deliver your clothes with hotel-grade care. Relax while we handle the mess.</p>
+      <div class="hero-buttons">
+        <!-- Direct WhatsApp link -->
+        <button class="btn-primary" onclick="window.location.href='https://wa.me/916301327337'">
+          Book Pickup on WhatsApp
+        </button>
+        <button class="btn-ghost" onclick="showTab('pricing')">
+          View Prices
+        </button>
+      </div>
+      <div class="hero-tagline">
+        Free pickup & delivery · Express option available
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom info panel with tabs -->
+  <section class="info-wrapper" id="info-panel">
+    <div class="info-card">
+      <div class="info-heading">FreshSpin Laundry · Narsapur</div>
+      <div class="info-sub">
+        <span>Rustumbada · Doorstep service with free delivery up to 2 km</span>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="services">
+          <span class="emoji">🧺</span> <span>Services</span>
+        </button>
+        <button class="tab-btn" data-tab="pricing">
+          <span class="emoji">💰</span> <span>Pricing</span>
+        </button>
+        <button class="tab-btn" data-tab="contact">
+          <span class="emoji">☎️</span> <span>Contact</span>
+        </button>
+      </div>
+
+      <!-- SERVICES TAB -->
+      <div class="tab-content active" id="tab-services">
+        <p class="tab-description">
+          We handle your daily wear and premium garments with care.
+        </p>
+        <div class="cards">
+          <article class="card">
+            <span class="pill">Most Popular</span>
+            <h3>Wash & Fold</h3>
+            <p>Daily clothes washed, dried and neatly folded. Perfect for regular wear.</p>
+          </article>
+
+          <article class="card">
+            <span class="pill">Premium</span>
+            <h3>Dry Cleaning</h3>
+            <p>Suits, sarees, kurtas and delicate fabrics with special care.</p>
+          </article>
+
+          <article class="card">
+            <span class="pill">Home Care</span>
+            <h3>Blankets & Curtains</h3>
+            <p>Thick blankets and home linen cleaned in industrial machines.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- PRICING TAB -->
+      <div class="tab-content" id="tab-pricing">
+        <p class="tab-description">
+          Transparent pricing with free pickup & delivery within 2 km.
+        </p>
+
+        <ul class="price-list">
+          <li><span>Wash & Fold</span><span>₹70 / kg (min 3 kg)</span></li>
+          <li><span>Shirt / T-Shirt (wash & iron)</span><span>from ₹25</span></li>
+          <li><span>Trousers / Jeans (wash & iron)</span><span>from ₹35</span></li>
+          <li><span>Saree – Iron only</span><span>₹20</span></li>
+          <li><span>Saree – Ordinary wash</span><span>₹50</span></li>
+          <li><span>Special saree wash</span><span>₹70 – ₹100</span></li>
+          <li><span>Bedsheet washing</span><span>₹30</span></li>
+          <li><span>Thick blanket</span><span>₹100</span></li>
+        </ul>
+
+        <div class="price-note">
+          Delivery charges: <strong>Free</strong> up to 2 km range.
+        </div>
+      </div>
+
+      <!-- CONTACT TAB -->
+      <div class="tab-content" id="tab-contact">
+        <p class="tab-description">
+          Contact us for pickups, pricing details or special garment care.
+        </p>
+        <div class="contact-lines">
+          <div><strong>Direct Call:</strong> <a href="tel:919951290177">+91-9951290177</a></div>
+          <div><strong>WhatsApp Booking:</strong> <a href="https://wa.me/916301327337" target="_blank">+91-6301327337</a></div>
+          <div><strong>Location:</strong> Rustumbada, Narsapur</div>
+          <div><strong>Google Maps:</strong> <a href="https://maps.app.goo.gl/EXGGKaha3Q9qFwJa7" target="_blank">View on Maps</a></div>
+          <div><strong>Working Hours:</strong> 8:00 AM – 9:00 PM</div>
+        </div>
+        <div class="price-note">
+          Send us a message and we’ll confirm your pickup slot.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> FreshSpin Laundry. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Tab switching logic
+    function showTab(tabName) {
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const tabContents = document.querySelectorAll(".tab-content");
+
+      tabButtons.forEach(btn => {
+        if (btn.getAttribute("data-tab") === tabName) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+
+      tabContents.forEach(content => {
+        if (content.id === "tab-" + tabName) {
+          content.classList.add("active");
+        } else {
+          content.classList.remove("active");
+        }
+      });
+
+      // Scroll to info card when switching tabs
+      const panel = document.getElementById("info-panel");
+      if (panel) {
+        panel.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+
+    // Attach click handlers for tab buttons
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const tabName = btn.getAttribute("data-tab");
+        showTab(tabName);
+      });
+    });
+  </script>
+</body>
+</html>
